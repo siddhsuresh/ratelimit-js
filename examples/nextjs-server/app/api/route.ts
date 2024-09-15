@@ -1,14 +1,12 @@
 export const dynamic = "force-dynamic";
 import { Ratelimit } from "../../../../dist/index";
-import { RedisAdapter } from "../../../../ioredis-adapter/dist/index";
+import { ioRedisAdapter } from "../../../../ioredis-adapter/dist/index";
 import Redis from "ioredis";
 
 const redis = new Redis();
 
-const redisAdapter = new RedisAdapter(redis);
-
 const ratelimit = new Ratelimit({
-  redis: redisAdapter,
+  redis: new ioRedisAdapter(redis),
   limiter: Ratelimit.slidingWindow(10, "10 s"),
   prefix: "test",
 });

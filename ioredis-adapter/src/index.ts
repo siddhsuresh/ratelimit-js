@@ -1,5 +1,7 @@
-import Redis, { RedisKey } from "ioredis";
-import { Pipeline } from "@upstash/redis";
+import type Redis from "ioredis";
+import type { RedisKey } from "ioredis";
+import type { Pipeline } from "@upstash/redis";
+import type { Redis as RatelimitRedis } from "../../src/types";
 
 export type IsDenied = 0 | 1;
 
@@ -51,24 +53,7 @@ class PipelineAdapter {
   };
 }
 
-export interface RedisAdapterInterface {
-  sadd: <TData>(key: string, ...members: TData[]) => Promise<number>;
-  hset: <TValue>(
-    key: string,
-    obj: { [key: string]: TValue }
-  ) => Promise<number>;
-  eval: <TArgs extends unknown[], TData = unknown>(
-    ...args: [script: string, keys: string[], args: TArgs]
-  ) => Promise<TData>;
-  evalsha: <TArgs extends unknown[], TData = unknown>(
-    ...args: [sha1: string, keys: string[], args: TArgs]
-  ) => Promise<TData>;
-  scriptLoad: (...args: [script: string]) => Promise<string>;
-  smismember: (key: string, members: string[]) => Promise<IsDenied[]>;
-  multi: () => Pipeline;
-}
-
-export class RedisAdapter implements RedisAdapterInterface {
+export class ioRedisAdapter implements RatelimitRedis {
   private redis: Redis;
   constructor(redis: Redis) {
     this.redis = redis;
@@ -117,6 +102,6 @@ export class RedisAdapter implements RedisAdapterInterface {
   };
 
   multi = () => {
-    return new PipelineAdapter(this.redis) as unknown as Pipeline
+    return new PipelineAdapter(this.redis) as unknown as Pipeline;
   };
 }
