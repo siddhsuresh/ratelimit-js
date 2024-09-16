@@ -1,0 +1,17 @@
+{
+  "name": "@siddhsuresh/upstash-ratelimit-ioredis-adapter",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsup"
+  },
+  "author": "Siddharth Suresh",
+  "license": "ISC",
+  "devDependencies": {
+    "@upstash/redis": "^1.34.0",
+    "ioredis": "^5.4.1",
+    "tsup": "^8.2.4"
+  }
+}
